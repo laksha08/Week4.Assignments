@@ -1,0 +1,44 @@
+package week4.day1;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Assig2Disappear {
+
+	public static void main(String[] args) throws IOException {
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://www.leafground.com/pages/disapper.html");
+		 
+		WebElement dis = driver.findElement(By.xpath("//button[@id='btn']"));
+		@SuppressWarnings("deprecation")
+		WebDriverWait wait = new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.invisibilityOf(dis));
+		
+		String text = driver.findElement(By.xpath("//strong[contains(text(),'I know you can do it! Button is disappeared!')]")).getText();
+		if (text.contains("I know you can do it! Button is disappeared!")) {
+			System.out.println("Button is disappeared");
+		}
+		else {
+			System.out.println("Button is not disappeared");
+		}
+		
+		File source = driver.getScreenshotAs(OutputType.FILE);
+		File dest = new File("./src/main/resources/Snaps/Img004.jpg");
+		FileUtils.copyFile(source, dest);
+
+	}
+
+}
